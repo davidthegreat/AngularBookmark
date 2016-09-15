@@ -48,8 +48,8 @@ angular.module('App', [
           return $scope.editedBookmark !== null && $scope.editedBookmark.id === bookmarkId;
       }
 
-      $scope.setEditedBookmark = setEditedBookmark;
       $scope.isSelectedBookmark = isSelectedBookmark;
+      $scope.setEditedBookmark = setEditedBookmark;
 
       function resetCreateForm() {
           $scope.newBookmark = {
@@ -69,9 +69,22 @@ angular.module('App', [
           resetCreateForm();
       }
 
-      
+      function setEditedBookmark(bookmark){
+      	$scope.editedBookmark = bookmark;
+      }
+
+      function updateBookmark(bookmark){
+      	var index = _.findIndex($scope.bookmarks, function(b){
+      		return b.id == bookmark.id;
+      	});
+      	$scope.bookmarks[index] = bookmark;
+
+      	$scope.editedBookmark = null;
+      	$scope.isEditing = false;
+      }
 
       $scope.createBookmark = createBookmark;
+      $scope.updateBookmark = updateBookmark;
       
 
       
