@@ -7,20 +7,20 @@
 <body ng-controller="Mainctrl">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-sm-3 col-md-2 sidebar">
-                    <a ng-click="setCurrentCategory(null)"><img class="logo" src="assets/img/eggly-logo.png"></a>
-                    <ul class="nav nav-sidebar">
-                        <li ng-repeat="category in categories" ng-class="{'active':isCurrentCategory(category)}">
-                            <a href="#" ng-click="setCurrentCategory(category)">
-                                {{category.name}}
-                            </a>
-                        </li>
-                    </ul>
-                </div>
+	            <div class="col-sm-3 col-md-2 sidebar">
+	                <a ng-click="setCurrentCategory(null)"><img class="logo" src="assets/img/eggly-logo.png"></a>
+	                <ul class="nav nav-sidebar">
+	                    <li ng-repeat="category in categories" ng-class="{'active':isCurrentCategory(category)}">
+	                        <a ng-click="setCurrentCategory(category)">
+	                            {{category.name}}
+	                        </a>
+	                    </li>
+	                </ul>
+	            </div>
                 <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-                    <div  ng-repeat="bookmark in bookmarks | filter:{category:currentCategory.name}">
+                    <div ng-class="{active: isSelectedBookmark(bookmark.id)}"  ng-repeat="bookmark in bookmarks | filter:{category:currentCategory.name}">
                         <button type="button" class="close">&times;</button>
-                        <button type="button" ng-click="startEditing()" class="btn btn-link" ng-click="setEditedBookmark(bookmark);startEditing();" ><span class="glyphicon glyphicon-pencil"></span>
+                        <button type="button" class="btn btn-link" ng-click="setEditedBookmark(bookmark);startEditing();" ><span class="glyphicon glyphicon-pencil"></span>
                         </button>
                         <a href="{{bookmark.url}}" target="_blank">{{bookmark.title}}</a>
                     </div>
@@ -44,12 +44,23 @@
                         <button type="button" class="btn btn-default btn-lg pull-right" ng-click="cancelCreating()">Cancel</button>
                     </form>
                     </div>
-                    <!-- Editing -->
-                   
-                    <div ng-if="shouldShowEditing()">
-                    	Edit a bookmark!
-                    	<button type="button" class="btn btn-default btn-lg pull-right" ng-click="cancelEditing()">Cancel</button>
-                    </div>
+                    <!-- Editing -->                   
+                <div ng-show="shouldShowEditing()">
+                    <h4>Editing {{editedBookmark.title}}</h4>
+
+                    <form class="edit-form" role="form" ng-submit="updateBookmark(editedBookmark)" novalidate>
+                        <div class="form-group">
+                            <label>Bookmark Title</label>
+                            <input type="text" class="form-control" ng-model="editedBookmark.title" placeholder="Enter title">
+                        </div>
+                        <div class="form-group">
+                            <label>Bookmark URL</label>
+                            <input type="text" class="form-control" ng-model="editedBookmark.url" placeholder="Enter URL">
+                        </div>
+                        <button type="submit" class="btn btn-info btn-lg">Save</button>
+                        <button type="button" class="btn btn-default btn-lg pull-right" ng-click="cancelEditing()">Cancel</button>
+                    </form>
+                </div>
                     
                 </div>
             </div>
